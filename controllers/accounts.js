@@ -6,6 +6,7 @@ const bcryptjs = require('bcryptjs')
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const user = require('../models/user');
+const { status } = require('express/lib/response');
 
 
 //Creat account
@@ -144,6 +145,110 @@ router.post("/verify", async (req, res) => {
         });
       });
   });
+
+
+  //Forget Password
+
+  router.post('/forgetPassword',(req, res) => {
+    //Get user data
+    const email = req.body.email;
+    User.findOne({ email:email })
+    .then(async account => {
+      //Is user exist
+      if(account){
+        //Generate new passcode
+        const newPasscode = generateRandomIntegerInRange(1000,9999);
+        account.passcode = newPasscode;
+        account.save()
+        .then(account_Update => {
+           //Response
+          return res.status(200).json({
+            message: account_Update.passcode
+          });
+        })
+      } else {
+        return res.status(200).json({
+          message: "user not found",
+        });
+      }
+    })
+    .catch(err => {
+      return response.status(500).json({
+        message: err
+      });
+    })
+  })
+
+  //verifyRecover
+
+  router.post("/verifyRecover", async (req, res) => {
+    // get passcode and email
+    const { email, passcode } = req.body;
+    // is user exists
+    User.findOne({ email: email })
+      .then(async (account) => {
+        // verify code
+        if (account) {
+          if (account.passcode == passcode) {
+            // Response
+              return res.status(200).json({
+                message: "Passcode match",
+              });
+            
+          } else {
+            return res.status(200).json({
+                message: "passcode not match",
+            });
+          }
+        } else {
+          // response
+          return res.status(200).json({
+            message: "user not found",
+          });
+        }
+      })
+      .catch((err) => {
+        return res.status(500).json({
+            message: err,
+        });
+      });
+  });
+
+  //Update password
+
+  router.post('/updatePassword', async (req, res) => {
+    //Get user input
+    const { email, password } = req.body;
+    User.findOne({ email: email })
+    .then(async account => {
+      //Is user exist
+      if(account){
+        //encrypt user password
+        const formatted_password = await bcryptjs.hash(password, 10);
+        //update new encrypt pass in mongodb
+        account.password = formatted_password;
+        account.save()
+        .then(account_Update => {
+          return res.status(200).json({
+            message: account_Update
+          })
+        })
+      } else {
+        return res.status(200).json({
+          message: 'User not found'
+        })
+      }
+    })
+    .catch(err => {
+      return res.status(500).json({
+        message: err``
+      })
+    })
+    
+    
+    
+    //Response
+  })
 
 
 router.get('/sayHello', async(req,res) => {
