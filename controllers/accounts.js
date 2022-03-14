@@ -6,6 +6,8 @@ const bcryptjs = require('bcryptjs')
 
 const User = require('../models/user');
 
+
+//Creat account
 router.post('/creatAccount', async(req, res) => {
     //Get user inputs
     const { firsName, lastName, email, password, mobile } = req.body;
@@ -54,6 +56,26 @@ router.post('/creatAccount', async(req, res) => {
 
 });
 
+//Login
+router.post('/login', async(res, req) => {
+    // Get user credentials
+    // Is User exist
+    // Is verified Is locked
+    // Compare password
+    // Creat token
+    // Response
+
+})
+
+//Verify passcode
+router.post('/verify', async(res, req) => {
+    // Get passcode and email
+
+    // Is user exist
+    // Verify code
+    // Update isApproved
+    // Response
+})
 
 router.get('/sayHello', async(req,res) => {
     try {
