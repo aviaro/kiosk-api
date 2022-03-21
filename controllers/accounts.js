@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const user = require('../models/user');
 const { status } = require('express/lib/response');
+const isAuth = require('./isAuth');
 
 
 //Creat account
@@ -216,7 +217,7 @@ router.post("/verify", async (req, res) => {
 
   //Update password
 
-  router.post('/updatePassword', async (req, res) => {
+  router.post('/updatePassword', async (req, res) => {4
     //Get user input
     const { email, password } = req.body;
     User.findOne({ email: email })
@@ -241,7 +242,7 @@ router.post("/verify", async (req, res) => {
     })
     .catch(err => {
       return res.status(500).json({
-        message: err``
+        message: err
       })
     })
     
@@ -250,6 +251,9 @@ router.post("/verify", async (req, res) => {
     //Response
   })
 
+  router.get('/getUserData', isAuth, async(req, res) => {
+    
+  })
 
 router.get('/sayHello', async(req,res) => {
     try {
