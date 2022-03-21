@@ -72,7 +72,7 @@ router.post("/login", async (request, response) => {
               const acc_data = {
                 firstName: user.firstName,
                 lastName: user.lastName,
-                avata: user.avata,
+                Avatar: user.Avatar,
                 mobile: user.mobile,
                 email: user.email,
                 _id: user._id,
@@ -252,7 +252,9 @@ router.post("/verify", async (req, res) => {
   })
 
   router.get('/getUserData', isAuth, async(req, res) => {
-    
+    return res.status(200).json({
+      message: `Hello ${req.account.firstName}`
+    })
   })
 
 router.get('/sayHello', async(req,res) => {
