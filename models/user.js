@@ -8,6 +8,7 @@ const userSchema = new Schema({
     creadAdt: { type: Date, default: Date.now },
     password: String,
     mobile: String,
+    dob: Date,
     Avatar: {type: String, default: 'https://e7.pngegg.com/pngimages/122/295/png-clipart-open-user-profile-facebook-free-content-facebook-silhouette-avatar-thumbnail.png'},
     firstName: String,
     lastName: String,
