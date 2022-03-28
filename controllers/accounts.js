@@ -8,6 +8,7 @@ const User = require('../models/user');
 const user = require('../models/user');
 const { status } = require('express/lib/response');
 const isAuth = require('./isAuth');
+const Store = require('../models/store');
 
 
 //Creat account
@@ -252,8 +253,10 @@ router.post("/verify", async (req, res) => {
   })
 
   router.get('/getUserData', isAuth, async(req, res) => {
+    const userId = req.account._id
+    const store = await Store.findOne({associateId : userId}).populate('associateId')
     return res.status(200).json({
-      message: `Hello ${req.account.firstName}`
+      message: store
     })
   })
 
