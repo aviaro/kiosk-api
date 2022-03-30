@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 
-const categorySchema = new Schema({
+const productSchema = new Schema({
     _id: mongoose.Schema.Types.ObjectId,
     storeId: {type: mongoose.Schema.Types.ObjectId, ref: 'Store'},
     categoryId: {type: mongoose.Schema.Types.ObjectId, ref: 'Category'},
@@ -20,4 +20,4 @@ const categorySchema = new Schema({
 });
 
 
-module.exports = mongoose.model('Category', categorySchema);
+module.exports = mongoose.model('Product', productSchema);
