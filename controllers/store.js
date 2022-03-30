@@ -40,7 +40,30 @@ router.post('/creatStore', isAuth, async(req, res) => {
     }
   })
 
+router.put('/updateStore', isAuth, async(req, res) => {
+    const accountId = req.account._id
+    const store = await Store.findOne({associateId: accountId});
+    store.storeName = req.body.storeName;
+    store.isTakewaway = req.body.isTakewaway;
+    store.isDelivery = req.body.isDelivery;
+    store.contactInfo = req.body.contactInfo;
+    store.storeDescription = req.body.storeDescription;
+    store.workingHours = req.body.workingHours;
+    store.log = req.body.log;
+    store.updateAdt = Date.now();
 
+    return store.save()
+    .then(updatedStore => {
+        return res.status(200).json({
+            store: updatedStore
+        })
+    })
+    .catch(err => {
+        return res.status(500).json({
+            message: err
+        })
+    })
+})
 
 
 module.exports = router
