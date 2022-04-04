@@ -253,6 +253,7 @@ router.post("/verify", async (req, res) => {
   })
 
   router.get('/getUserData', isAuth, async(req, res) => {
+    console.log(req.account);
     const userId = req.account._id
     const store = await Store.findOne({associateId : userId}).populate('associateId')
     return res.status(200).json({
