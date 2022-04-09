@@ -9,6 +9,8 @@ const user = require('../models/user');
 const { status } = require('express/lib/response');
 const isAuth = require('./isAuth');
 const Store = require('../models/store');
+const Product = require('../models/product');
+const Category = require('../models/category');
 
 
 //Creat account
@@ -253,11 +255,29 @@ router.post("/verify", async (req, res) => {
   })
 
   router.get('/getUserData', isAuth, async(req, res) => {
-    console.log(req.account);
     const userId = req.account._id
-    const store = await Store.findOne({associateId : userId}).populate('associateId')
+    const store = await Store.findOne({associateId : userId}).populate('associateId');
+    const category = await Category.find({storeId: store._id});
+    const product = await Product.find({storeId: store._id})
+
+    const categoryAndProduct = [];
+    category.forEach(category => {
+      const categoryPeoducts = []
+      product.forEach(prod => {
+        if(prod.categoryId.equals(category._id)) {
+          categoryPeoducts.push(prod)
+        }
+      })
+      categoryAndProduct.push({
+        category:category.categoryName,
+        categoryId: category._id,
+        categoryPeoducts: categoryPeoducts
+      })
+    })
+
     return res.status(200).json({
-      message: store
+      Store: store,
+      StoreCategoryAndProducts: categoryAndProduct
     })
   })
 
