@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const { urlencoded } = require('body-parser');
 const app = express();
 const port = 3000;
+const cors = require('cors');
+app.use(cors());
 
 const accounts = require('./controllers/accounts');
 const storeRoute = require('./controllers/store');
